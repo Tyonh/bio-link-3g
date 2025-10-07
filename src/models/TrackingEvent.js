@@ -30,6 +30,14 @@ const trackingEventSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  geo: {
+    country: { type: String },
+    city: { type: String },
+  },
+  device: {
+    screenWidth: { type: Number },
+    screenHeight: { type: Number },
+  },
 });
 
 module.exports = mongoose.model("TrackingEvent", trackingEventSchema);
