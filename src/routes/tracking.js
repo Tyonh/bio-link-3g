@@ -1,4 +1,4 @@
-// src/routes/tracking.js - VERSÃO ATUALIZADA
+// src/routes/tracking.js
 
 const express = require("express");
 const router = express.Router();
