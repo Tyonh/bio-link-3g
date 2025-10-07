@@ -11,11 +11,7 @@ const PORT = process.env.PORT || 3001;
 
 // 2. CONFIGURAÇÃO DO CORS - O PONTO CRÍTICO
 const corsOptions = {
-<<<<<<< HEAD
   origin: "https://grupo3giluminacao.com.br",
-=======
-  origin: "https://grupo3giluminacao.com.br", // <-- O ERRO ESTÁ QUASE CERTAMENTE AQUI
->>>>>>> 275538d (server.js 0.2)
   optionsSuccessStatus: 200,
 };
 app.use(cors(corsOptions));

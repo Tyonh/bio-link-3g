@@ -12,11 +12,8 @@
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
-    "date-fns": "^4.1.0",
-    "date-fns-tz": "^3.2.0",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
-    "geoip-lite": "^1.4.10",
     "mongoose": "^8.19.1"
   },
   "engines": {
