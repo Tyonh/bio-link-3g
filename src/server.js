@@ -8,6 +8,13 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const trackingRoutes = require("./routes/tracking");
 
+const corsOptions = {
+  // MUITO IMPORTANTE: Substitua pela URL onde seu FRONTEND está hospedado
+  origin: "https://grupo3giluminacao.com.br/",
+  optionsSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
 const app = express();
 const PORT = process.env.PORT || 3001;
 

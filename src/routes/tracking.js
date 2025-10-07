@@ -33,6 +33,15 @@ router.post("/", async (req, res) => {
   }
 });
 
-// ... (sua rota GET para visualizar os dados, se você a criou) ...
+router.get("/", async (req, res) => {
+  try {
+    // Busca todos os eventos no banco de dados e ordena pelos mais recentes
+    const events = await TrackingEvent.find({}).sort({ timestamp: -1 });
+    res.status(200).json(events);
+  } catch (error) {
+    console.error("Erro ao buscar eventos:", error);
+    res.status(500).json({ message: "Erro interno no servidor." });
+  }
+});
 
 module.exports = router;
