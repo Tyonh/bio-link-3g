@@ -3,6 +3,7 @@
 const express = require("express");
 const router = express.Router();
 const TrackingEvent = require("../models/TrackingEvent");
+const geoip = require("geoip-lite");
 
 router.post("/", async (req, res) => {
   try {
@@ -16,12 +17,18 @@ router.post("/", async (req, res) => {
     const ipAddress = req.ip;
     const userAgent = req.get("user-agent");
 
+    const geo = geoip.lookup(ipAddress);
+
     const newEvent = new TrackingEvent({
       eventType,
       target,
       source, // NOVO: Adicionamos o source ao objeto que será salvo
       ipAddress,
       userAgent,
+      geo: {
+        country: geo ? geo.country : "Unknown", // Ex: 'BR'
+        city: geo ? geo.city : "Unknown", // Ex: 'Fortaleza'
+      },
     });
 
     await newEvent.save();

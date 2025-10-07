@@ -30,6 +30,10 @@ const trackingEventSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  geo: {
+    country: { type: String },
+    city: { type: String },
+  },
 });
 
 module.exports = mongoose.model("TrackingEvent", trackingEventSchema);
