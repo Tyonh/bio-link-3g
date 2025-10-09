@@ -5,6 +5,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const trackingRoutes = require("./routes/tracking");
+const uri =
+  "mongodb+srv://grupo3G:grupo3G071025@cluster0.imv350f.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
 const app = express();
 const PORT = process.env.PORT || 3001;

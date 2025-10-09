@@ -1,10 +1,9 @@
 // src/routes/tracking.js 0.1
-// Testando as funcionalidades da estrutura do codigo
+
 const express = require("express");
 const router = express.Router();
 const TrackingEvent = require("../models/TrackingEvent");
 const geoip = require("geoip-lite");
-const mongoose = require("mongoose");
 
 router.post("/", async (req, res) => {
   try {
