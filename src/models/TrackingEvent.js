@@ -1,4 +1,4 @@
-// src/models/TrackingEvent.js - VERSÃO ATUALIZADA 0.2
+// src/models/TrackingEvent.js - VERSÃO ATUALIZADA 0.3
 
 const mongoose = require("mongoose");
 
