@@ -8,7 +8,7 @@ const geoip = require("geoip-lite");
 router.post("/", async (req, res) => {
   try {
     // NOVO: Extraímos 'source' do corpo da requisição
-    const { eventType, target, source } = req.body;
+    const { eventType, target, source, page } = req.body;
 
     if (!eventType || (eventType === "click" && !target)) {
       return res.status(400).json({ message: "Dados insuficientes." });
@@ -22,7 +22,8 @@ router.post("/", async (req, res) => {
     const newEvent = new TrackingEvent({
       eventType,
       target,
-      source, // NOVO: Adicionamos o source ao objeto que será salvo
+      source,
+      page,
       ipAddress,
       userAgent,
       geo: {

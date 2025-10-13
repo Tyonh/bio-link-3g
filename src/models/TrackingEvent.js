@@ -20,6 +20,9 @@ const trackingEventSchema = new mongoose.Schema({
       return this.eventType === "click";
     },
   },
+  page: {
+    type: String, // Armazenará o caminho da página, ex: "/contato.html"
+  },
   ipAddress: {
     type: String,
   },
