@@ -68,8 +68,15 @@ router.post("/", async (req, res) => {
 
     // Tratamento especial para página inicial
     let normalizedPage = page;
-    if (page === "/") {
-      normalizedPage = "LandiPage"; // Define 'home' como valor padrão para a página inicial
+    // Verifica se a página corresponde à URL completa do site
+    if (
+      eventType === "visit" &&
+      (page === "https://grupo3giluminacao.com.br" ||
+        page === "https://www.grupo3giluminacao.com.br" ||
+        page === "http://grupo3giluminacao.com.br" ||
+        page === "/")
+    ) {
+      normalizedPage = "LandiPage"; // Define 'LandiPage' para a página inicial
     }
 
     // Validação para eventType "visit" - página será sempre preenchida agora
