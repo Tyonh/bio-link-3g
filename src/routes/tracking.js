@@ -74,6 +74,7 @@ router.post("/", async (req, res) => {
       (page === "https://grupo3giluminacao.com.br" ||
         page === "https://www.grupo3giluminacao.com.br" ||
         page === "http://grupo3giluminacao.com.br" ||
+        page === "https://grupo3giluminacao.com.br/" ||
         page === "/")
     ) {
       normalizedPage = "LandiPage"; // Define 'LandiPage' para a página inicial
