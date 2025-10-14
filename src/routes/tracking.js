@@ -75,17 +75,18 @@ router.post("/", async (req, res) => {
         page === "https://www.grupo3giluminacao.com.br" ||
         page === "http://grupo3giluminacao.com.br" ||
         page === "https://grupo3giluminacao.com.br/" ||
+        page === "GRUPO 3G" ||
         page === "/")
     ) {
       normalizedPage = "LandiPage"; // Define 'LandiPage' para a página inicial
     }
 
     // Validação para eventType "visit" - página será sempre preenchida agora
-    if (eventType === "visit" && !normalizedPage) {
-      return res.status(400).json({
-        message: "Para eventos do tipo 'visit', o campo 'page' é obrigatório.",
-      });
-    }
+    // if (eventType === "visit" && !normalizedPage) {
+    //   return res.status(400).json({
+    //     message: "Para eventos do tipo 'visit', o campo 'page' é obrigatório.",
+    //   });
+    // }
 
     // Validação para eventType "click" - deve ter target
     if (eventType === "click" && !target) {
