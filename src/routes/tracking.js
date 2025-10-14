@@ -7,11 +7,30 @@ const geoip = require("geoip-lite");
 
 router.post("/", async (req, res) => {
   try {
-    // NOVO: Extraímos 'source' do corpo da requisição
+    // Extraímos os dados do corpo da requisição
     const { eventType, target, source, page } = req.body;
 
-    if (!eventType || (eventType === "click" && !target)) {
-      return res.status(400).json({ message: "Dados insuficientes." });
+    // Validação para eventType "visit" - deve ter página preenchida
+    if (eventType === "visit" && !page) {
+      return res.status(400).json({
+        message: "Para eventos do tipo 'visit', o campo 'page' é obrigatório.",
+      });
+    }
+
+    // Validação para eventType "click" - deve ter target
+    if (eventType === "click" && !target) {
+      return res.status(400).json({
+        message:
+          "Para eventos do tipo 'click', o campo 'target' é obrigatório.",
+      });
+    }
+
+    // Validação geral do eventType
+    if (!eventType || !["visit", "click"].includes(eventType)) {
+      return res.status(400).json({
+        message:
+          "O campo 'eventType' é obrigatório e deve ser 'visit' ou 'click'.",
+      });
     }
 
     const ipAddress = req.ip;
