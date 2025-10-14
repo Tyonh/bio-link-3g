@@ -82,11 +82,11 @@ router.post("/", async (req, res) => {
     }
 
     // Validação para eventType "visit" - página será sempre preenchida agora
-    // if (eventType === "visit" && !normalizedPage) {
-    //   return res.status(400).json({
-    //     message: "Para eventos do tipo 'visit', o campo 'page' é obrigatório.",
-    //   });
-    // }
+    if (eventType === "visit" && !normalizedPage) {
+      return res.status(400).json({
+        message: "Para eventos do tipo 'visit', o campo 'page' é obrigatório.",
+      });
+    }
 
     // Validação para eventType "click" - deve ter target
     if (eventType === "click" && !target) {
