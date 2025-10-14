@@ -68,7 +68,7 @@ router.post("/", async (req, res) => {
 
     // Tratamento especial para página inicial
     let normalizedPage = page;
-    if (!page || page === "/" || page === "") {
+    if (!page || page === "/") {
       normalizedPage = "LandiPage"; // Define 'home' como valor padrão para a página inicial
     }
 
