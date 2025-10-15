@@ -63,11 +63,20 @@ const geoip = require("geoip-lite");
 
 router.post("/", async (req, res) => {
   try {
-    // Extraímos os dados do corpo da requisição
-    const { eventType, target, source, page } = req.body;
+    // Adiciona um pequeno delay para garantir que o evento seja processado (100ms)
+    await new Promise((resolve) => setTimeout(resolve, 100));
 
-    // Tratamento especial para página inicial
-    let normalizedPage = page;
+    // Extraímos os dados do corpo da requisição com valores padrão
+    const {
+      eventType = "visit",
+      target = null,
+      source = "direct",
+      page = "/",
+      userAgentData = req.get("user-agent") || "unknown",
+    } = req.body;
+
+    // Tratamento especial para página inicial com verificação mais robusta
+    let normalizedPage = page || "/";
     // Verifica se a página corresponde à URL completa do site
     if (
       eventType === "visit" &&
@@ -104,11 +113,23 @@ router.post("/", async (req, res) => {
       });
     }
 
-    const ipAddress = req.ip;
-    const userAgent = req.get("user-agent");
+    const ipAddress = req.ip || req.connection.remoteAddress || "unknown";
+    const userAgent = req.get("user-agent") || userAgentData || "unknown";
 
-    const geo = geoip.lookup(ipAddress);
+    // Tenta obter informações geográficas com retry
+    let geo = null;
+    try {
+      geo = geoip.lookup(ipAddress);
+      if (!geo && ipAddress !== "unknown") {
+        // Segunda tentativa após 50ms
+        await new Promise((resolve) => setTimeout(resolve, 50));
+        geo = geoip.lookup(ipAddress);
+      }
+    } catch (geoError) {
+      console.error("Erro ao obter localização:", geoError);
+    }
 
+    // Cria o evento com validações extras
     const newEvent = new TrackingEvent({
       eventType,
       target,
@@ -122,12 +143,39 @@ router.post("/", async (req, res) => {
       },
     });
 
-    await newEvent.save();
+    // Tenta salvar com retry em caso de falha
+    let savedEvent = null;
+    let retryCount = 0;
+    const maxRetries = 3;
 
-    res.status(201).json({ message: "Evento registrado com sucesso!" });
+    while (!savedEvent && retryCount < maxRetries) {
+      try {
+        savedEvent = await newEvent.save();
+        break;
+      } catch (saveError) {
+        retryCount++;
+        console.error(`Tentativa ${retryCount} falhou:`, saveError);
+        if (retryCount < maxRetries) {
+          await new Promise((resolve) => setTimeout(resolve, 100 * retryCount));
+        }
+      }
+    }
+
+    if (savedEvent) {
+      res.status(201).json({
+        message: "Evento registrado com sucesso!",
+        eventId: savedEvent._id,
+      });
+    } else {
+      throw new Error("Falha ao salvar após várias tentativas");
+    }
   } catch (error) {
     console.error("Erro ao registrar evento:", error);
-    res.status(500).json({ message: "Erro interno no servidor." });
+    // Garante que o cliente receba uma resposta mesmo em caso de erro
+    res.status(500).json({
+      message: "Erro interno no servidor.",
+      error: error.message,
+    });
   }
 });
 
