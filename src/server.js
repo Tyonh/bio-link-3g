@@ -26,7 +26,7 @@ mongoose
   .then(() => console.log("Conectado ao MongoDB com sucesso!"))
   .catch((err) => console.error("Falha ao conectar ao MongoDB:", err));
 
-app.use("/bio/", trackingRoutes);
+app.use("/api/track", trackingRoutes);
 
 app.listen(PORT, () => {
   console.log(`🚀 Servidor backend rodando na porta ${PORT}`);
